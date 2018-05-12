@@ -2,56 +2,34 @@
 
 namespace Wearesho\Delivery\Tests;
 
-use PHPUnit\Framework\TestCase;
 use Wearesho\Delivery;
 
 /**
  * Class MemoryRepositoryTest
  * @package Wearesho\Delivery\Tests
+ *
+ * @property-read Delivery\MemoryRepository $repository
  */
-class MemoryRepositoryTest extends TestCase
+class MemoryRepositoryTest extends Delivery\Test\RepositoryTest
 {
-    /** @var Delivery\MemoryRepository */
-    protected $repository;
-
-    protected function setUp(): void
+    protected function getRepository(): Delivery\RepositoryInterface
     {
-        parent::setUp();
-        $this->repository = new Delivery\MemoryRepository();
+        return new Delivery\MemoryRepository();
     }
 
-    public function testPush(): void
+    public function testFlushing(): void
     {
-        $message = new Delivery\Message(1, 2);
-        $sender = static::class;
-        $isSent = true;
+        $message = new Delivery\Message("text", "recipient");
+        $item = new Delivery\HistoryItem($message, static::class, true, new \DateTime);
 
-        $this->repository->push($message, $sender, $isSent);
+        $this->repository->save($item);
 
-        $this->assertEquals(
-            $sender,
-            $this->repository->getSender($message)
-        );
-
-        $this->assertEquals(
-            $isSent,
-            $this->repository->isSent($message)
-        );
-
-        $historyItem = $this->repository->getHistoryItem($message);
-
-        $this->assertEquals(
-            new Delivery\HistoryItem($message, $sender, $isSent, $historyItem->getSentAt()),
-            $historyItem
-        );
-
-        $this->assertEquals(
-            [$historyItem],
-            $this->repository->getHistory()
-        );
+        $history = $this->repository->getHistory();
+        $this->assertCount(1, $history);
+        $this->assertEquals([$item], $history);
 
         $this->repository->flush();
-        $this->assertEquals([], $this->repository->getHistory());
-        $this->assertNull($this->repository->getHistoryItem($message));
+
+        $this->assertCount(0, $this->repository->getHistory());
     }
 }
