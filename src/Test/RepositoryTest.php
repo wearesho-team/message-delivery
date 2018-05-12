@@ -59,9 +59,9 @@ trait RepositoryTest
             $historyItem->getSender(),
             $sender
         );
-        $this->assertTrue(
-            $historyItem->getSentAt() >= $before
-            && $historyItem->getSentAt() <= $after
+        $this->assertEquals(
+            $before->format('Y-m-d H:i:s'),
+            $historyItem->getSentAt()->format('Y-m-d H:i:s')
         );
     }
 }
