@@ -1,4 +1,9 @@
 # Message Delivery
+[![Latest Stable Version](https://poser.pugx.org/wearesho-team/message-delivery/v/stable.png)](https://packagist.org/packages/wearesho-team/message-delivery)
+[![Total Downloads](https://poser.pugx.org/wearesho-team/message-delivery/downloads.png)](https://packagist.org/packages/wearesho-team/message-delivery)
+[![Build Status](https://travis-ci.org/wearesho-team/message-delivery.svg?branch=master)](https://travis-ci.org/wearesho-team/message-delivery)
+[![codecov](https://codecov.io/gh/wearesho-team/message-delivery/branch/master/graph/badge.svg)](https://codecov.io/gh/wearesho-team/message-delivery)
+
 This repository includes standard interfaces and implementations
 for simple message sending.  
 This interfaces created to be used by [Wearesho Team](https://wearesho.com/)
