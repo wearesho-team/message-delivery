@@ -56,5 +56,6 @@ class MemoryRepositoryTest extends TestCase
 
         $this->repository->flush();
         $this->assertEquals([], $this->repository->getHistory());
+        $this->assertNull($this->repository->getHistoryItem($message));
     }
 }
