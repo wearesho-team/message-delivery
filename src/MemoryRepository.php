@@ -10,36 +10,9 @@ namespace Wearesho\Delivery;
  */
 class MemoryRepository implements RepositoryInterface
 {
-    /** @var HistoryItem[] */
+    use RepositoryTrait;
+
     protected $history = [];
-
-    /**
-     * @inheritdoc
-     */
-    public function push(MessageInterface $message, string $sender, bool $sent): void
-    {
-        $this->history[] = new HistoryItem($message, $sender, $sent);
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function isSent(MessageInterface $message): ?bool
-    {
-        $historyItem = $this->getHistoryItem($message);
-
-        return $historyItem ? $historyItem->isSent() : null;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getSender(MessageInterface $message): ?string
-    {
-        $historyItem = $this->getHistoryItem($message);
-
-        return $historyItem ? $historyItem->getSender() : null;
-    }
 
     /**
      * @return HistoryItem[]
@@ -66,5 +39,10 @@ class MemoryRepository implements RepositoryInterface
     public function flush(): void
     {
         $this->history = [];
+    }
+
+    public function save(HistoryItemInterface $item): void
+    {
+        $this->history[] = $item;
     }
 }

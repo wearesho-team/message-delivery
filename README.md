@@ -32,6 +32,8 @@ Stores history of message sending. Can be used as dependency in
 implementation. Created for test purposes. 
 - [MemoryRepository](./src/MemoryRepository.php) - simple [RepositoryInterface](./src/RepositoryInterface.php)
 implementation that allows to store history in memory. Created for test purposes.
+- [RepositoryTrait](./src/RepositoryTrait.php) - simplifies [RepositoryInterface](./src/RepositoryInterface.php)
+implementation.
 
 ### Example
 
