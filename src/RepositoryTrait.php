@@ -2,6 +2,8 @@
 
 namespace Wearesho\Delivery;
 
+use Wearesho\Delivery;
+
 /**
  * Trait RepositoryTrait
  * @package Wearesho\Delivery
@@ -37,7 +39,7 @@ trait RepositoryTrait
         return $historyItem ? $historyItem->getSender() : null;
     }
 
-    abstract public function getHistoryItem(MessageInterface $message = null): ?HistoryItemInterface;
+    abstract public function getHistoryItem(Delivery\MessageInterface $message): ?Delivery\HistoryItemInterface;
 
-    abstract public function save(HistoryItemInterface $item): void;
+    abstract public function save(Delivery\HistoryItemInterface $item): void;
 }

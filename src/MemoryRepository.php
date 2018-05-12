@@ -14,15 +14,7 @@ class MemoryRepository implements RepositoryInterface
 
     protected $history = [];
 
-    /**
-     * @return HistoryItem[]
-     */
-    public function getHistory(): array
-    {
-        return $this->history;
-    }
-
-    public function getHistoryItem(MessageInterface $message): ?HistoryItem
+    public function getHistoryItem(MessageInterface $message): ?HistoryItemInterface
     {
         foreach ($this->history as $item) {
             $isMatch = $item->getRecipient() === $message->getRecipient()
@@ -36,13 +28,21 @@ class MemoryRepository implements RepositoryInterface
         return null;
     }
 
+    public function save(HistoryItemInterface $item): void
+    {
+        $this->history[] = $item;
+    }
+
     public function flush(): void
     {
         $this->history = [];
     }
 
-    public function save(HistoryItemInterface $item): void
+    /**
+     * @return HistoryItem[]
+     */
+    public function getHistory(): array
     {
-        $this->history[] = $item;
+        return $this->history;
     }
 }
