@@ -41,11 +41,7 @@ class MemoryRepositoryTest extends TestCase
         $historyItem = $this->repository->getHistoryItem($message);
 
         $this->assertEquals(
-            [
-                'message' => $message,
-                'sent' => $isSent,
-                'sender' => $sender,
-            ],
+            new Delivery\HistoryItem($message, $sender, $isSent, $historyItem->getSentAt()),
             $historyItem
         );
 

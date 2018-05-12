@@ -10,7 +10,7 @@ namespace Wearesho\Delivery;
  */
 class MemoryRepository implements RepositoryInterface
 {
-    /** @var array[] */
+    /** @var HistoryItem[] */
     protected $history = [];
 
     /**
@@ -18,11 +18,7 @@ class MemoryRepository implements RepositoryInterface
      */
     public function push(MessageInterface $message, string $sender, bool $sent): void
     {
-        $this->history[] = [
-            'message' => $message,
-            'sender' => $sender,
-            'sent' => $sent,
-        ];
+        $this->history[] = new HistoryItem($message, $sender, $sent);
     }
 
     /**
@@ -32,7 +28,7 @@ class MemoryRepository implements RepositoryInterface
     {
         $historyItem = $this->getHistoryItem($message);
 
-        return $historyItem ? $historyItem['sent'] : null;
+        return $historyItem ? $historyItem->isSent() : null;
     }
 
     /**
@@ -42,21 +38,22 @@ class MemoryRepository implements RepositoryInterface
     {
         $historyItem = $this->getHistoryItem($message);
 
-        return $historyItem ? $historyItem['sender'] : null;
+        return $historyItem ? $historyItem->getSender() : null;
     }
 
+    /**
+     * @return HistoryItem[]
+     */
     public function getHistory(): array
     {
         return $this->history;
     }
 
-    public function getHistoryItem(MessageInterface $message): ?array
+    public function getHistoryItem(MessageInterface $message): ?HistoryItem
     {
         foreach ($this->history as $item) {
-            /** @var MessageInterface $itemMessage */
-            $itemMessage = $item['message'];
-            $isMatch = $itemMessage->getRecipient() === $message->getRecipient()
-                && $itemMessage->getText() === $message->getText();
+            $isMatch = $item->getRecipient() === $message->getRecipient()
+                && $item->getText() === $message->getText();
 
             if ($isMatch) {
                 return $item;
