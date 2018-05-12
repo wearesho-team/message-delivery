@@ -9,8 +9,10 @@ use Wearesho\Delivery;
  * Provides a base test class for ensuring correct work of
  * @see Delivery\RepositoryTrait
  * abstract methods
+ *
+ * @mixin TestCase
  */
-abstract class RepositoryTest extends TestCase
+trait RepositoryTest
 {
     /** @var Delivery\RepositoryInterface */
     protected $repository;

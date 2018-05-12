@@ -2,6 +2,7 @@
 
 namespace Wearesho\Delivery\Tests;
 
+use PHPUnit\Framework\TestCase;
 use Wearesho\Delivery;
 
 /**
@@ -10,8 +11,10 @@ use Wearesho\Delivery;
  *
  * @property-read Delivery\MemoryRepository $repository
  */
-class MemoryRepositoryTest extends Delivery\Test\RepositoryTest
+class MemoryRepositoryTest extends TestCase
 {
+    use Delivery\Test\RepositoryTest;
+
     protected function getRepository(): Delivery\RepositoryInterface
     {
         return new Delivery\MemoryRepository();
