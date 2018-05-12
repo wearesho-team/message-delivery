@@ -31,7 +31,9 @@ trait RepositoryTest
         $sender = static::class;
         $isSent = true;
 
+        $before = new \DateTime;
         $this->repository->push($message, $sender, $isSent);
+        $after = new \DateTime;
 
         $this->assertEquals(
             $sender,
@@ -46,8 +48,20 @@ trait RepositoryTest
         $historyItem = $this->repository->getHistoryItem($message);
 
         $this->assertEquals(
-            new Delivery\HistoryItem($message, $sender, $isSent, $historyItem->getSentAt()),
-            $historyItem
+            $historyItem->getText(),
+            $message->getText()
+        );
+        $this->assertEquals(
+            $historyItem->getRecipient(),
+            $message->getRecipient()
+        );
+        $this->assertEquals(
+            $historyItem->getSender(),
+            $sender
+        );
+        $this->assertTrue(
+            $historyItem->getSentAt() >= $before
+            && $historyItem->getSentAt() <= $after
         );
     }
 }
