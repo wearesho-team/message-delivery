@@ -40,6 +40,7 @@
     "test": "./vendor/bin/phpunit"
   },
   "suggests": {
-    "wearesho-team/yii2-message-delivery": "Yii2 implementation of Delivery\\RepositoryInterface"
+    "wearesho-team/yii2-message-delivery": "Yii2 implementation of Delivery\\RepositoryInterface",
+    "wearesho-team/alphasms-message-delivery": "AlphaSMS Delivery\\Service integration"
   }
 }

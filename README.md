@@ -53,6 +53,11 @@ $message = new Delivery\Message(
 $service->send($message);
 ```
 
+## Integrations
+- [wearesho-team/yii2-message-delivery](https://github.com/wearesho-team/yii2-message-delivery) - Delivery\RepositoryInterface implementation,
+Delivery\ServiceInterface implementation using async queue
+- [wearesho-team/alphasms-message-delivery](https://github.com/wearesho-team/alphasms-message-delivery) - [AlphaSMS](https://alphasms.ua) integration
+
 ## Authors
 - [Alexander <horat1us> Letnikow](mailto:reclamme@gmail.com)
 
