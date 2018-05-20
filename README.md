@@ -23,7 +23,7 @@ composer require wearesho-team/message-delivery
 - [RepositoryInterface](./src/RepositoryInterface.php) - messages repository.
 Stores history of message sending. Can be used as dependency in
 [ServiceInterface](./src/ServiceInterface.php) implementations.
-- [Contains](./src/ContainsSenderName.php) - interface than extend Message with sender name getter
+- [ContainsSenderName](./src/ContainsSenderName.php) - interface than extend Message with sender name getter
 
 ### Implementations
 - [MessageTrait](./src/MessageTrait.php) - traits with getters for
