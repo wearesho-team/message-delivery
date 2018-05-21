@@ -6,9 +6,9 @@ namespace Wearesho\Delivery;
  * Class HistoryItem
  * @package Wearesho\Delivery
  */
-class HistoryItem implements HistoryItemInterface
+class HistoryItem implements HistoryItemInterface, ContainsSenderName
 {
-    use MessageTrait;
+    use MessageTrait, SenderNameTrait;
 
     /** @var \DateTimeInterface */
     protected $date;
@@ -32,6 +32,10 @@ class HistoryItem implements HistoryItemInterface
         $this->sent = $sent;
 
         $this->date = $date ?? new \DateTime;
+
+        $this->senderName = $message instanceof ContainsSenderName
+            ? $message->getSenderName()
+            : '';
     }
 
     public function isSent(): bool

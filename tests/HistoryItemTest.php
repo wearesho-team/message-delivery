@@ -31,4 +31,19 @@ class HistoryItemTest extends TestCase
             $item->getSentAt() >= $before && $item->getSentAt() <= $after
         );
     }
+
+    public function testCreateWithSender(): void
+    {
+        $message = new Delivery\MessageWithSender(
+            "text",
+            "recipient",
+            'customSenderName'
+        );
+
+        $item = new Delivery\HistoryItem($message, static::class, true);
+
+        $this->assertEquals("text", $item->getText());
+        $this->assertEquals("recipient", $item->getRecipient());
+        $this->assertEquals('customSenderName', $item->getSenderName());
+    }
 }
