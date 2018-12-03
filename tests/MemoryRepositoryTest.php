@@ -20,6 +20,13 @@ class MemoryRepositoryTest extends TestCase
         return new Delivery\MemoryRepository();
     }
 
+    public function testGetNull(): void
+    {
+        $this->assertNull(
+            $this->repository->getHistoryItem(new Delivery\Message("text", "recipient"))
+        );
+    }
+
     public function testFlushing(): void
     {
         $message = new Delivery\Message("text", "recipient");
