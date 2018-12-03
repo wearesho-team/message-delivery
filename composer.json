@@ -41,6 +41,7 @@
   },
   "suggests": {
     "wearesho-team/yii2-message-delivery": "Yii2 implementation of Delivery\\RepositoryInterface",
-    "wearesho-team/alphasms-message-delivery": "AlphaSMS Delivery\\Service integration"
+    "wearesho-team/alphasms-message-delivery": "AlphaSMS Delivery\\Service integration",
+    "wearesho-team/telegram-message-delivery": "Telegram bot api Delivery\\Service integration"
   }
 }
