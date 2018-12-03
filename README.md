@@ -62,6 +62,8 @@ $service->send($message);
 - [wearesho-team/yii2-message-delivery](https://github.com/wearesho-team/yii2-message-delivery) - Delivery\RepositoryInterface implementation,
 Delivery\ServiceInterface implementation using async queue
 - [wearesho-team/alphasms-message-delivery](https://github.com/wearesho-team/alphasms-message-delivery) - [AlphaSMS](https://alphasms.ua) integration
+- [wearesho-team/telegram-message-delivery](https://github.com/wearesho-team/telegram-message-delivery) - Telegram bot integration implemented in
+[irazasyed/telegram-bot-sdk](https://github.com/irazasyed/telegram-bot-sdk)
 
 ## Authors
 - [Alexander <horat1us> Letnikow](mailto:reclamme@gmail.com)
