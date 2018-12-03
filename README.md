@@ -39,6 +39,8 @@ implementation. Created for test purposes.
 implementation that allows to store history in memory. Created for test purposes.
 - [RepositoryTrait](./src/RepositoryTrait.php) - simplifies [RepositoryInterface](./src/RepositoryInterface.php)
 implementation.
+- [MessageCollection](./src/MessageCollection.php) - Simple typed collection that can contain only objects
+that instance of [MessageInterface](./src/MessageInterface.php)
 
 ### Example
 
