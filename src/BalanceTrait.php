@@ -11,8 +11,16 @@ trait BalanceTrait
     /** @var float */
     protected $amount;
 
+    /** @var string */
+    protected $currency;
+
     public function getAmount(): float
     {
         return $this->amount;
+    }
+
+    public function getCurrency(): ?string
+    {
+        return $this->currency;
     }
 }

@@ -10,13 +10,21 @@ class Balance implements BalanceInterface
 {
     use BalanceTrait;
 
-    public function __construct(float $amount)
+    public function __construct(float $amount, string $currency = null)
     {
         $this->amount = $amount;
+        $this->currency = $currency;
     }
 
     public function __toString(): string
     {
-        return number_format($this->getAmount(), 2);
+        $balance = number_format($this->getAmount(), 2);
+
+        $currency = $this->getCurrency();
+        if (!is_null($currency)) {
+            $balance .= " $currency";
+        }
+
+        return $balance;
     }
 }

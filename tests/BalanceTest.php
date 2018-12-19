@@ -12,6 +12,7 @@ use Wearesho\Delivery\Balance;
 class BalanceTest extends TestCase
 {
     protected const AMOUNT = 1234.499;
+    protected const CURRENCY = 'UAH';
 
     /** @var Balance */
     protected $balance;
@@ -20,7 +21,7 @@ class BalanceTest extends TestCase
     {
         parent::setUp();
 
-        $this->balance = new Balance(static::AMOUNT);
+        $this->balance = new Balance(static::AMOUNT, static::CURRENCY);
     }
 
     public function testGetAmount(): void
@@ -28,8 +29,20 @@ class BalanceTest extends TestCase
         $this->assertEquals(static::AMOUNT, $this->balance->getAmount());
     }
 
+    public function testGetCurrency(): void
+    {
+        $this->assertEquals(static::CURRENCY, $this->balance->getCurrency());
+    }
+
     public function testToString(): void
     {
-        $this->assertEquals('1,234.50', (string)$this->balance);
+        $this->assertEquals('1,234.50 UAH', (string)$this->balance);
+    }
+
+    public function testWithoutCurrency(): void
+    {
+        $balance = new Balance(static::AMOUNT);
+
+        $this->assertEquals('1,234.50', (string)$balance);
     }
 }
