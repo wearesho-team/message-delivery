@@ -8,5 +8,5 @@ namespace Wearesho\Delivery;
  */
 interface BalanceInterface
 {
-
+    public function getAmount(): float;
 }
