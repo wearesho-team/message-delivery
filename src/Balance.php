@@ -20,9 +20,8 @@ class Balance implements BalanceInterface
     {
         $balance = number_format($this->getAmount(), 2);
 
-        $currency = $this->getCurrency();
-        if (!is_null($currency)) {
-            $balance .= " $currency";
+        if (!is_null($this->currency)) {
+            $balance .= " {$this->currency}";
         }
 
         return $balance;
