@@ -67,6 +67,7 @@ Delivery\ServiceInterface implementation using async queue
 - [wearesho-team/alphasms-message-delivery](https://github.com/wearesho-team/alphasms-message-delivery) - [AlphaSMS](https://alphasms.ua) integration
 - [wearesho-team/telegram-message-delivery](https://github.com/wearesho-team/telegram-message-delivery) - Telegram bot integration implemented in
 [irazasyed/telegram-bot-sdk](https://github.com/irazasyed/telegram-bot-sdk)
+- [wearesho-team/turbosms-message-delivery](https://github.com/wearesho-team/turbosms-message-delivery) - [TurboSMS](https://turbosms.ua) integration
 
 ## Authors
 - [Alexander <horat1us> Letnikow](mailto:reclamme@gmail.com)
