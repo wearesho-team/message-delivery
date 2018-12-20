@@ -24,6 +24,8 @@ composer require wearesho-team/message-delivery
 Stores history of message sending. Can be used as dependency in
 [ServiceInterface](./src/ServiceInterface.php) implementations.
 - [ContainsSenderName](./src/ContainsSenderName.php) - interface than extend Message with sender name getter
+- [CheckBalance](src/CheckBalance.php) - contain declaration of method `balance` for service for checking balance.
+Return [Balance](src/Balance.php) that contain `amount` and `currency`.
 
 ### Implementations
 - [MessageTrait](./src/MessageTrait.php) - traits with getters for
@@ -39,6 +41,7 @@ implementation. Created for test purposes.
 implementation that allows to store history in memory. Created for test purposes.
 - [RepositoryTrait](./src/RepositoryTrait.php) - simplifies [RepositoryInterface](./src/RepositoryInterface.php)
 implementation.
+- [BalanceTrait](src/BalanceTrait.php) - trait with getters for [BalanceInterface](src/BalanceInterface.php)
 
 ### Example
 
