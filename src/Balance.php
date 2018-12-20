@@ -6,7 +6,7 @@ namespace Wearesho\Delivery;
  * Class Balance
  * @package Wearesho\Delivery
  */
-class Balance implements BalanceInterface
+class Balance implements BalanceInterface, \JsonSerializable
 {
     use BalanceTrait;
 
