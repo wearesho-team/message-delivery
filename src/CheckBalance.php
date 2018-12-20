@@ -3,10 +3,10 @@
 namespace Wearesho\Delivery;
 
 /**
- * Interface CheckBalanceMethod
+ * Interface CheckBalance
  * @package Wearesho\Delivery
  */
-interface CheckBalanceMethod
+interface CheckBalance
 {
     public function balance(): BalanceInterface;
 }
