@@ -11,7 +11,7 @@ trait BalanceTrait
     /** @var float */
     protected $amount;
 
-    /** @var string */
+    /** @var string|null */
     protected $currency;
 
     public function getAmount(): float
