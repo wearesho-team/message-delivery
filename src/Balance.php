@@ -18,12 +18,20 @@ class Balance implements BalanceInterface
 
     public function __toString(): string
     {
-        $balance = number_format($this->getAmount(), 2);
+        $balance = number_format($this->amount, 2);
 
         if (!is_null($this->currency)) {
             $balance .= " {$this->currency}";
         }
 
         return $balance;
+    }
+
+    public function jsonSerialize(): array
+    {
+        return [
+            'amount' => number_format($this->amount, 2),
+            'currency' => $this->currency
+        ];
     }
 }
