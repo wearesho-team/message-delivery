@@ -29,9 +29,6 @@ class Balance implements BalanceInterface, \JsonSerializable
 
     public function jsonSerialize(): array
     {
-        return [
-            'amount' => number_format($this->amount, 2),
-            'currency' => $this->currency
-        ];
+        return get_object_vars($this);
     }
 }

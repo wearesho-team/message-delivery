@@ -50,7 +50,7 @@ class BalanceTest extends TestCase
     {
         $this->assertEquals(
             [
-                'amount' => '1,234.50',
+                'amount' => '1234.499',
                 'currency' => 'UAH',
             ],
             $this->balance->jsonSerialize()
