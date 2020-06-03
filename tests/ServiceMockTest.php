@@ -41,14 +41,12 @@ class ServiceMockTest extends TestCase
         $this->assertNotNull($this->repository->getHistoryItem($message));
     }
 
-    /**
-     * @expectedException \Wearesho\Delivery\Exception
-     * @expectedExceptionMessage Test Fail
-     */
     public function testFail(): void
     {
         $message = new Delivery\Message(1, 2);
 
+        $this->expectException(\Wearesho\Delivery\Exception::class);
+        $this->expectExceptionMessage('Test Fail');
         try {
             $this->service
                 ->willFail()

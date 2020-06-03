@@ -15,6 +15,12 @@ trait RepositoryTrait
      */
     public function push(MessageInterface $message, string $sender, bool $sent): void
     {
+        if ($message instanceof Message\BatchInterface && !$message->valid()) {
+            foreach ($message->history() as $item) {
+                $this->save($item);
+            }
+            return;
+        }
         $item = new HistoryItem($message, $sender, $sent, new \DateTime());
         $this->save($item);
     }

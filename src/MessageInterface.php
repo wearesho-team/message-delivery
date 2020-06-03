@@ -2,13 +2,7 @@
 
 namespace Wearesho\Delivery;
 
-/**
- * Interface MessageInterface
- * @package Wearesho\Delivery
- */
-interface MessageInterface
+interface MessageInterface extends Message\Text, Message\Recipient
 {
     public function getRecipient(): string;
-
-    public function getText(): string;
 }
