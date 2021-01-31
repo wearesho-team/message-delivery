@@ -24,7 +24,9 @@ jobs:
           ini-values: "post_max_size=128M"
 
       - name: Check PHP Version
-        run: php -v
+        run: |
+          php -v
+          composer --version
 
       - name: Validate composer.json and composer.lock
         run: composer validate
