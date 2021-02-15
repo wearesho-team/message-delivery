@@ -11,11 +11,9 @@ use Wearesho\Delivery;
  */
 class ServiceMock implements ServiceInterface
 {
-    /** @var RepositoryInterface */
-    protected $repository;
+    protected RepositoryInterface $repository;
 
-    /** @var bool */
-    protected $willFail = false;
+    protected bool $willFail = false;
 
     public function __construct(RepositoryInterface $repository = null)
     {

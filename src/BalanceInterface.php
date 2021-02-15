@@ -1,11 +1,7 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Wearesho\Delivery;
 
-/**
- * Interface BalanceInterface
- * @package Wearesho\Delivery
- */
 interface BalanceInterface
 {
     public function getAmount(): float;

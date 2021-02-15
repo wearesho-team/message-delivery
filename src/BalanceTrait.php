@@ -1,18 +1,12 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Wearesho\Delivery;
 
-/**
- * Trait BalanceTrait
- * @package Wearesho\Delivery
- */
 trait BalanceTrait
 {
-    /** @var float */
-    protected $amount;
+    protected float $amount;
 
-    /** @var string|null */
-    protected $currency;
+    protected ?string $currency;
 
     public function getAmount(): float
     {

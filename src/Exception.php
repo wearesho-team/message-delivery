@@ -1,12 +1,7 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Wearesho\Delivery;
 
-/**
- * Class Exception
- * @package Wearesho\Delivery
- */
 class Exception extends \Exception
 {
-
 }
