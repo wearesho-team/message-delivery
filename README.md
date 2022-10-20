@@ -6,7 +6,6 @@
 
 This repository includes standard interfaces and implementations
 for simple message sending.  
-This interfaces created to be used by [Wearesho Team](https://wearesho.com/)
 
 ## Installation
 ```bash
