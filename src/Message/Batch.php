@@ -42,7 +42,7 @@ class Batch implements BatchInterface
         return $this->messages[$this->position];
     }
 
-    public function next(Delivery\HistoryItemInterface $item = null)
+    public function next(Delivery\HistoryItemInterface $item = null): void
     {
         if ($item) {
             $this->history->save($item);
@@ -60,7 +60,7 @@ class Batch implements BatchInterface
         return array_key_exists($this->position, $this->messages);
     }
 
-    public function rewind()
+    public function rewind(): void
     {
         $this->position = 0;
     }
