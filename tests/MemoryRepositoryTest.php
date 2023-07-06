@@ -51,7 +51,7 @@ class MemoryRepositoryTest extends TestCase
     public function testFlushing(): void
     {
         $message = new Delivery\Message("text", "recipient");
-        $item = new Delivery\HistoryItem($message, static::class, true, new \DateTime);
+        $item = new Delivery\HistoryItem($message, static::class, true, new \DateTime());
 
         $this->repository->save($item);
 

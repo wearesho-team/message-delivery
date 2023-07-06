@@ -8,7 +8,8 @@ namespace Wearesho\Delivery;
  */
 class HistoryItem implements HistoryItemInterface, ContainsSenderName
 {
-    use MessageTrait, SenderNameTrait;
+    use MessageTrait;
+    use SenderNameTrait;
 
     /** @var \DateTimeInterface */
     protected $date;
@@ -31,7 +32,7 @@ class HistoryItem implements HistoryItemInterface, ContainsSenderName
         $this->sender = $sender;
         $this->sent = $sent;
 
-        $this->date = $date ?? new \DateTime;
+        $this->date = $date ?? new \DateTime();
 
         $this->senderName = $message instanceof ContainsSenderName
             ? $message->getSenderName()

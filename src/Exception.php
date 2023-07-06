@@ -8,5 +8,4 @@ namespace Wearesho\Delivery;
  */
 class Exception extends \Exception
 {
-
 }

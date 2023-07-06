@@ -35,8 +35,8 @@
     }
   },
   "scripts": {
-    "lint": "./vendor/bin/phpcs --standard=PSR2 ./src ./tests",
-    "phpcbf": "./vendor/bin/phpcbf --standard=PSR2 ./src ./tests",
+    "lint": "./vendor/bin/phpcs --standard=PSR12 ./src ./tests",
+    "phpcbf": "./vendor/bin/phpcbf --standard=PSR12 ./src ./tests",
     "test": "./vendor/bin/phpunit",
     "cover": "./vendor/bin/phpunit --coverage-text",
     "cover-xml": "./vendor/bin/phpunit --coverage-xml ./coverage.xml"

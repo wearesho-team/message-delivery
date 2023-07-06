@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Wearesho\Delivery;
 
 use Wearesho\Delivery;

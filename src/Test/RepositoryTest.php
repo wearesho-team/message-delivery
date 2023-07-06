@@ -31,9 +31,9 @@ trait RepositoryTest
         $sender = static::class;
         $isSent = true;
 
-        $before = new \DateTime;
+        $before = new \DateTime();
         $this->repository->push($message, $sender, $isSent);
-        $after = new \DateTime;
+        $after = new \DateTime();
 
         $this->assertEquals(
             $sender,

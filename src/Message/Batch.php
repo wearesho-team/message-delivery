@@ -13,7 +13,7 @@ class Batch implements BatchInterface
     public function __construct(Delivery\MessageInterface $message, ...$messages)
     {
         $this->messages = [$message, ...$messages];
-        $this->history = new Delivery\MemoryRepository;
+        $this->history = new Delivery\MemoryRepository();
     }
 
     /**
