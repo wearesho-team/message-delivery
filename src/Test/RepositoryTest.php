@@ -27,7 +27,7 @@ trait RepositoryTest
 
     public function testPush(): void
     {
-        $message = new Delivery\Message(1, 2);
+        $message = new Delivery\Message('Text', '380930000000');
         $sender = static::class;
         $isSent = true;
 
@@ -63,5 +63,21 @@ trait RepositoryTest
             $before->format('Y-m-d H:i:s'),
             $historyItem->getSentAt()->format('Y-m-d H:i:s')
         );
+    }
+
+    public function testPushWithOptions(): void
+    {
+        $options = [
+            'foo' => 'bar',
+            'bar' => 'foo',
+        ];
+        $message = new Delivery\MessageWithOptions('Text', '380930000000', $options);
+        $sender = static::class;
+        $isSent = true;
+
+        $this->repository->push($message, $sender, $isSent);
+        $historyItem = $this->repository->getHistoryItem($message);
+        $this->assertInstanceOf(Delivery\HistoryItemWithOptionsInterface::class, $historyItem);
+        $this->assertEquals($options, $historyItem->getOptions());
     }
 }

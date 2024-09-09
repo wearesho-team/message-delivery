@@ -21,7 +21,15 @@ trait RepositoryTrait
             }
             return;
         }
-        $item = new HistoryItem($message, $sender, $sent, new \DateTime());
+        $item = $message instanceof MessageWithOptions
+            ? new HistoryItemWithOptions(
+                $message,
+                $sender,
+                $sent,
+                new \DateTime(),
+                $message->getOptions()
+            )
+            : new HistoryItem($message, $sender, $sent, new \DateTime());
         $this->save($item);
     }
 
