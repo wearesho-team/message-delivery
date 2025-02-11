@@ -1,16 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Wearesho\Delivery;
 
-/**
- * Class Balance
- * @package Wearesho\Delivery
- */
-class Balance implements BalanceInterface, \JsonSerializable
+class Balance implements BalanceInterface, \JsonSerializable, \Stringable
 {
     use BalanceTrait;
 
-    public function __construct(float $amount, string $currency = null)
+    public function __construct(float $amount, ?string $currency = null)
     {
         $this->amount = $amount;
         $this->currency = $currency;

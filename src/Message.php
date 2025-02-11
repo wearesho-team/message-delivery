@@ -1,18 +1,30 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Wearesho\Delivery;
 
-/**
- * Class Message
- * @package Wearesho\Delivery
- */
 class Message implements MessageInterface
 {
-    use MessageTrait;
+    public function __construct(
+        private readonly string $text,
+        private readonly string $recipient,
+        private readonly array $options = []
+    ) {
+    }
 
-    public function __construct(string $text, string $recipient)
+    public function getText(): string
     {
-        $this->recipient = $recipient;
-        $this->text = $text;
+        return $this->text;
+    }
+
+    public function getRecipient(): string
+    {
+        return $this->recipient;
+    }
+
+    public function getOptions(): array
+    {
+        return $this->options;
     }
 }
