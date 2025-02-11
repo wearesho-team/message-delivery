@@ -24,5 +24,5 @@ interface RepositoryInterface
 
     public function getById(int $id): ?ItemInterface;
 
-    public function getByResultId(string $resultId): ?ItemInterface;
+    public function getByResultId(string $serviceName, string $resultId): ?ItemInterface;
 }

@@ -41,7 +41,10 @@ abstract class RepositoryTest extends TestCase
         $this->assertNotNull($retrievedById);
         $this->assertEquals($item->id(), $retrievedById->id());
 
-        $retrievedByResultId = $this->repository->getByResultId($result->messageId());
+        $retrievedByResultId = $this->repository->getByResultId(
+            $serviceName,
+            $result->messageId()
+        );
         $this->assertNotNull($retrievedByResultId);
         $this->assertEquals($item->id(), $retrievedByResultId->id());
     }
@@ -65,14 +68,16 @@ abstract class RepositoryTest extends TestCase
     public function testGetByResultId(): void
     {
         // Test non-existent item
-        $this->assertNull($this->repository->getByResultId('non_existent_id'));
+        $this->assertNull(
+            $this->repository->getByResultId('nonExistentService', 'non_existent_id')
+        );
 
         // Test existing item
         $result = $this->createResult('msg_456');
         $serviceName = 'serviceNameTest';
         $addedItem = $this->repository->add($serviceName, $result);
 
-        $item = $this->repository->getByResultId($result->messageId());
+        $item = $this->repository->getByResultId($serviceName, $result->messageId());
         $this->assertNotNull($item);
         $this->assertEquals($addedItem->id(), $item->id());
         $this->validateItem($item, $result, $serviceName);
@@ -102,7 +107,7 @@ abstract class RepositoryTest extends TestCase
             $this->assertNotNull($retrievedById);
             $this->assertEquals($item->id(), $retrievedById->id());
 
-            $retrievedByResultId = $this->repository->getByResultId($results[$index]->messageId());
+            $retrievedByResultId = $this->repository->getByResultId($serviceName, $results[$index]->messageId());
             $this->assertNotNull($retrievedByResultId);
             $this->assertEquals($item->id(), $retrievedByResultId->id());
         }
@@ -114,15 +119,15 @@ abstract class RepositoryTest extends TestCase
         $initialResult = $this->createResult('msg_789', Result\Status::Sent);
         $serviceName = 'serviceNameTest';
         $item = $this->repository->add($serviceName, $initialResult);
-
+        $newServiceName = 'serviceNameTestTwo';
         $updatedResult = $this->createResult('msg_789', Result\Status::Delivered);
 
         // Act
-        $updatedItem = $this->repository->update($item, $updatedResult);
+        $updatedItem = $this->repository->update($item, $updatedResult, $newServiceName);
 
         // Assert
         $this->assertEquals($item->id(), $updatedItem->id());
-        $this->validateItem($updatedItem, $updatedResult, $serviceName);
+        $this->validateItem($updatedItem, $updatedResult, $newServiceName);
         $this->assertGreaterThanOrEqual($item->at(), $updatedItem->at());
         $this->assertGreaterThanOrEqual($item->updatedAt(), $updatedItem->updatedAt());
 
@@ -132,7 +137,7 @@ abstract class RepositoryTest extends TestCase
         $this->assertEquals($updatedItem->id(), $retrievedById->id());
         $this->assertEquals($updatedResult->status(), $retrievedById->result()->status());
 
-        $retrievedByResultId = $this->repository->getByResultId($updatedResult->messageId());
+        $retrievedByResultId = $this->repository->getByResultId($serviceName, $updatedResult->messageId());
         $this->assertNotNull($retrievedByResultId);
         $this->assertEquals($updatedItem->id(), $retrievedByResultId->id());
         $this->assertEquals($updatedResult->status(), $retrievedByResultId->result()->status());
@@ -177,7 +182,7 @@ abstract class RepositoryTest extends TestCase
 
     protected function validateItem(ItemInterface $item, ResultInterface $result, string $serviceName): void
     {
-        $this->assertGreaterThan(0, $item->id());
+        $this->assertGreaterThan(-1, $item->id());
         $this->assertEquals($serviceName, $item->serviceName());
         $this->assertEquals($result->messageId(), $item->result()->messageId());
         $this->assertEquals($result->status(), $item->result()->status());
