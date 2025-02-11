@@ -1,59 +1,161 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Wearesho\Delivery\Tests;
 
 use PHPUnit\Framework\TestCase;
-use Wearesho\Delivery\Balance;
+use Wearesho\Delivery;
 
-/**
- * Class BalanceTest
- * @package Wearesho\Delivery\Tests
- */
 class BalanceTest extends TestCase
 {
-    protected const AMOUNT = 1234.49;
-    protected const CURRENCY = 'UAH';
+    /**
+     * @dataProvider balanceDataProvider
+     */
+    public function testBalanceCreationAndGetters(
+        float $amount,
+        ?string $currency,
+        string $expectedString,
+        array $expectedJson
+    ): void {
+        // Arrange & Act
+        $balance = new Delivery\Balance($amount, $currency);
 
-    /** @var Balance */
-    protected $balance;
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        $this->balance = new Balance(static::AMOUNT, static::CURRENCY);
+        // Assert
+        $this->assertEquals($amount, $balance->getAmount());
+        $this->assertEquals($currency, $balance->getCurrency());
+        $this->assertEquals($expectedString, (string)$balance);
+        $this->assertEquals($expectedJson, $balance->jsonSerialize());
     }
 
-    public function testGetAmount(): void
+    public static function balanceDataProvider(): array
     {
-        $this->assertEquals(static::AMOUNT, $this->balance->getAmount());
-    }
-
-    public function testGetCurrency(): void
-    {
-        $this->assertEquals(static::CURRENCY, $this->balance->getCurrency());
-    }
-
-    public function testToString(): void
-    {
-        $this->assertEquals('1,234.49 UAH', (string)$this->balance);
-    }
-
-    public function testWithoutCurrency(): void
-    {
-        $balance = new Balance(static::AMOUNT);
-
-        $this->assertEquals('1,234.49', (string)$balance);
-    }
-
-    public function testJsonSerialize(): void
-    {
-        $this->assertEquals(
-            [
-                'amount' => '1234.49',
-                'currency' => 'UAH',
+        return [
+            'positive_with_currency' => [
+                'amount' => 100.50,
+                'currency' => 'USD',
+                'expectedString' => '100.50 USD',
+                'expectedJson' => [
+                    'amount' => 100.50,
+                    'currency' => 'USD',
+                ],
             ],
-            $this->balance->jsonSerialize()
+            'negative_with_currency' => [
+                'amount' => -50.75,
+                'currency' => 'EUR',
+                'expectedString' => '-50.75 EUR',
+                'expectedJson' => [
+                    'amount' => -50.75,
+                    'currency' => 'EUR',
+                ],
+            ],
+            'zero_with_currency' => [
+                'amount' => 0.00,
+                'currency' => 'GBP',
+                'expectedString' => '0.00 GBP',
+                'expectedJson' => [
+                    'amount' => 0.00,
+                    'currency' => 'GBP',
+                ],
+            ],
+            'without_currency' => [
+                'amount' => 75.25,
+                'currency' => null,
+                'expectedString' => '75.25',
+                'expectedJson' => [
+                    'amount' => 75.25,
+                    'currency' => null,
+                ],
+            ],
+            'large_number' => [
+                'amount' => 1000000.00,
+                'currency' => 'JPY',
+                'expectedString' => '1,000,000.00 JPY',
+                'expectedJson' => [
+                    'amount' => 1000000.00,
+                    'currency' => 'JPY',
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider numberFormatDataProvider
+     */
+    public function testNumberFormatting(float $amount, string $expectedFormat): void
+    {
+        // Arrange & Act
+        $balance = new Delivery\Balance($amount);
+
+        // Assert
+        $this->assertEquals($expectedFormat, (string)$balance);
+    }
+
+    public static function numberFormatDataProvider(): array
+    {
+        return [
+            'two_decimal_places' => [
+                'amount' => 10.1,
+                'expectedFormat' => '10.10',
+            ],
+            'round_three_decimals' => [
+                'amount' => 10.999,
+                'expectedFormat' => '11.00',
+            ],
+            'zero_decimals' => [
+                'amount' => 10.0,
+                'expectedFormat' => '10.00',
+            ],
+        ];
+    }
+
+    public function testJsonEncodeBalance(): void
+    {
+        // Arrange
+        $balance = new Delivery\Balance(99.99, 'USD');
+
+        // Act
+        $jsonString = json_encode($balance);
+
+        // Assert
+        $this->assertJson($jsonString);
+        $this->assertEquals(
+            '{"amount":99.99,"currency":"USD"}',
+            $jsonString
         );
+    }
+
+    /**
+     * @dataProvider stringCastDataProvider
+     */
+    public function testStringCasting(float $amount, ?string $currency, string $expected): void
+    {
+        // Arrange
+        $balance = new Delivery\Balance($amount, $currency);
+
+        // Act & Assert
+        $this->assertEquals($expected, (string)$balance);
+        $this->assertEquals($expected, $balance->__toString());
+    }
+
+    public static function stringCastDataProvider(): array
+    {
+        return [
+            'with_currency' => [
+                'amount' => 123.45,
+                'currency' => 'USD',
+                'expected' => '123.45 USD',
+            ],
+            'without_currency' => [
+                'amount' => 123.45,
+                'currency' => null,
+                'expected' => '123.45',
+            ],
+            'zero_amount' => [
+                'amount' => 0.00,
+                'currency' => 'EUR',
+                'expected' => '0.00 EUR',
+            ],
+        ];
     }
 }

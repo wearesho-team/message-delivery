@@ -10,9 +10,13 @@ use Wearesho\Delivery;
  */
 interface ServiceInterface
 {
+    public function name(): string;
+
+    public function balance(): BalanceInterface;
+
     /**
      * @param Delivery\MessageInterface $message
      * @throws Delivery\Exception
      */
-    public function send(Delivery\MessageInterface $message): void;
+    public function send(Delivery\MessageInterface $message): ResultInterface;
 }
