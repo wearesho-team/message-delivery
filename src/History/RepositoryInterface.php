@@ -16,7 +16,11 @@ interface RepositoryInterface
      */
     public function batch(string $serviceName, array $items): array;
 
-    public function update(ItemInterface $item, Delivery\ResultInterface $result): ItemInterface;
+    public function update(
+        ItemInterface $item,
+        Delivery\ResultInterface $result,
+        ?string $serviceName = null
+    ): ItemInterface;
 
     public function getById(int $id): ?ItemInterface;
 
