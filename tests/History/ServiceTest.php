@@ -59,7 +59,7 @@ class ServiceTest extends TestCase
         $this->repositoryMock
             ->expects($this->once())
             ->method('add')
-            ->with($result)
+            ->with('TestService', $result)
             ->willReturn($historyItem);
 
         // Act
@@ -96,7 +96,7 @@ class ServiceTest extends TestCase
         $this->repositoryMock
             ->expects($this->once())
             ->method('batch')
-            ->with($results)
+            ->with('TestService', $results)
             ->willReturn($historyItems);
 
         // Act

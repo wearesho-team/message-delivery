@@ -27,13 +27,14 @@ abstract class RepositoryTest extends TestCase
     {
         // Arrange
         $result = $this->createResult('msg_123');
+        $serviceName = 'serviceNameTest';
 
         // Act
-        $item = $this->repository->add($result);
+        $item = $this->repository->add($serviceName, $result);
 
         // Assert
         $this->assertInstanceOf(ItemInterface::class, $item);
-        $this->validateItem($item, $result);
+        $this->validateItem($item, $result, $serviceName);
 
         // Verify item can be retrieved
         $retrievedById = $this->repository->getById($item->id());
@@ -52,12 +53,13 @@ abstract class RepositoryTest extends TestCase
 
         // Test existing item
         $result = $this->createResult('msg_123');
-        $addedItem = $this->repository->add($result);
+        $serviceName = 'serviceNameTest';
+        $addedItem = $this->repository->add($serviceName, $result);
 
         $item = $this->repository->getById($addedItem->id());
         $this->assertNotNull($item);
         $this->assertEquals($addedItem->id(), $item->id());
-        $this->validateItem($item, $result);
+        $this->validateItem($item, $result, $serviceName);
     }
 
     public function testGetByResultId(): void
@@ -67,12 +69,13 @@ abstract class RepositoryTest extends TestCase
 
         // Test existing item
         $result = $this->createResult('msg_456');
-        $addedItem = $this->repository->add($result);
+        $serviceName = 'serviceNameTest';
+        $addedItem = $this->repository->add($serviceName, $result);
 
         $item = $this->repository->getByResultId($result->messageId());
         $this->assertNotNull($item);
         $this->assertEquals($addedItem->id(), $item->id());
-        $this->validateItem($item, $result);
+        $this->validateItem($item, $result, $serviceName);
     }
 
     public function testBatch(): void
@@ -83,15 +86,16 @@ abstract class RepositoryTest extends TestCase
             $this->createResult('msg_2'),
             $this->createResult('msg_3'),
         ];
+        $serviceName = 'serviceNameTestBatch';
 
         // Act
-        $items = $this->repository->batch($results);
+        $items = $this->repository->batch($serviceName, $results);
 
         // Assert
         $this->assertCount(count($results), $items);
         foreach ($items as $index => $item) {
             $this->assertInstanceOf(ItemInterface::class, $item);
-            $this->validateItem($item, $results[$index]);
+            $this->validateItem($item, $results[$index], $serviceName);
 
             // Verify each item can be retrieved
             $retrievedById = $this->repository->getById($item->id());
@@ -108,7 +112,8 @@ abstract class RepositoryTest extends TestCase
     {
         // Arrange
         $initialResult = $this->createResult('msg_789', Result\Status::Sent);
-        $item = $this->repository->add($initialResult);
+        $serviceName = 'serviceNameTest';
+        $item = $this->repository->add($serviceName, $initialResult);
 
         $updatedResult = $this->createResult('msg_789', Result\Status::Delivered);
 
@@ -117,7 +122,7 @@ abstract class RepositoryTest extends TestCase
 
         // Assert
         $this->assertEquals($item->id(), $updatedItem->id());
-        $this->validateItem($updatedItem, $updatedResult);
+        $this->validateItem($updatedItem, $updatedResult, $serviceName);
         $this->assertGreaterThanOrEqual($item->at(), $updatedItem->at());
         $this->assertGreaterThanOrEqual($item->updatedAt(), $updatedItem->updatedAt());
 
@@ -135,7 +140,8 @@ abstract class RepositoryTest extends TestCase
 
     public function testBatchWithEmptyArray(): void
     {
-        $items = $this->repository->batch([]);
+        $serviceName = 'serviceNameEmpty';
+        $items = $this->repository->batch($serviceName, []);
         $this->assertIsArray($items);
         $this->assertEmpty($items);
     }
@@ -169,9 +175,10 @@ abstract class RepositoryTest extends TestCase
         );
     }
 
-    protected function validateItem(ItemInterface $item, ResultInterface $result): void
+    protected function validateItem(ItemInterface $item, ResultInterface $result, string $serviceName): void
     {
         $this->assertGreaterThan(0, $item->id());
+        $this->assertEquals($serviceName, $item->serviceName());
         $this->assertEquals($result->messageId(), $item->result()->messageId());
         $this->assertEquals($result->status(), $item->result()->status());
         $this->assertEquals($result->reason(), $item->result()->reason());
