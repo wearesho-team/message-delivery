@@ -15,6 +15,7 @@ class Item implements ItemInterface
     public function __construct(
         private readonly int $id,
         private readonly Delivery\ResultInterface $result,
+        private readonly string $serviceName,
         ?\DateTimeInterface $at = null,
         ?\DateTimeInterface $updatedAt = null,
     ) {
@@ -30,6 +31,11 @@ class Item implements ItemInterface
     public function result(): Delivery\ResultInterface
     {
         return $this->result;
+    }
+
+    public function serviceName(): string
+    {
+        return $this->serviceName;
     }
 
     public function at(): \DateTimeInterface

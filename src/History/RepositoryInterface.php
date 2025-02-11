@@ -8,13 +8,13 @@ use Wearesho\Delivery;
 
 interface RepositoryInterface
 {
-    public function add(Delivery\ResultInterface $item): ItemInterface;
+    public function add(string $serviceName, Delivery\ResultInterface $item): ItemInterface;
 
     /**
      * @param Delivery\ResultInterface[] $items
      * @return ItemInterface[]
      */
-    public function batch(array $items): array;
+    public function batch(string $serviceName, array $items): array;
 
     public function update(ItemInterface $item, Delivery\ResultInterface $result): ItemInterface;
 

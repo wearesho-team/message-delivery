@@ -32,6 +32,7 @@ class ItemTest extends TestCase
      */
     public function testItemCreationAndGetters(
         int $id,
+        string $serviceName,
         ?\DateTimeInterface $at,
         ?\DateTimeInterface $updatedAt
     ): void {
@@ -39,11 +40,12 @@ class ItemTest extends TestCase
         Carbon::setTestNow('2025-02-11 12:00:00');
 
         // Act
-        $item = new Delivery\History\Item($id, $this->resultMock, $at, $updatedAt);
+        $item = new Delivery\History\Item($id, $this->resultMock, $serviceName, $at, $updatedAt);
 
         // Assert
         $this->assertEquals($id, $item->id());
         $this->assertSame($this->resultMock, $item->result());
+        $this->assertEquals($serviceName, $item->serviceName());
 
         if ($at === null) {
             $this->assertEquals(Carbon::now(), $item->at());
@@ -66,21 +68,25 @@ class ItemTest extends TestCase
         return [
             'with_explicit_dates' => [
                 'id' => 1,
+                'serviceName' => 'serviceNameTest',
                 'at' => $fixedDate,
                 'updatedAt' => $updatedDate,
             ],
             'with_null_dates' => [
                 'id' => 2,
+                'serviceName' => 'serviceNameTest',
                 'at' => null,
                 'updatedAt' => null,
             ],
             'with_only_at_date' => [
                 'id' => 3,
+                'serviceName' => 'serviceNameTest',
                 'at' => $fixedDate,
                 'updatedAt' => null,
             ],
             'with_only_updated_at_date' => [
                 'id' => 4,
+                'serviceName' => 'serviceNameTest',
                 'at' => null,
                 'updatedAt' => $updatedDate,
             ],
@@ -90,7 +96,7 @@ class ItemTest extends TestCase
     public function testResultAccessibility(): void
     {
         // Arrange
-        $item = new Delivery\History\Item(1, $this->resultMock);
+        $item = new Delivery\History\Item(1, $this->resultMock, 'serviceName');
 
         // Act
         $result = $item->result();
@@ -109,7 +115,7 @@ class ItemTest extends TestCase
         Carbon::setTestNow($now);
 
         // Act
-        $item = new Delivery\History\Item(1, $this->resultMock);
+        $item = new Delivery\History\Item(1, $this->resultMock, 'serviceName');
 
         // Assert
         $this->assertEquals($now, $item->at());
