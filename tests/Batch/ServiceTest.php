@@ -138,4 +138,21 @@ class ServiceTest extends TestCase
         $this->assertCount(1, $results);
         $this->assertSame($result1, $results[0]);
     }
+
+    public function testBatchWrap(): void
+    {
+        $service = Delivery\Batch\Service::wrap($this->baseServiceMock);
+        $this->assertEquals('TestService', $service->name());
+    }
+
+    public function testBatchWrapBatchService(): void
+    {
+        $serviceName = 'TestServiceBatch';
+
+        $serviceMock = $this->createMock(Delivery\Batch\ServiceInterface::class);
+        $serviceMock->method('name')->willReturn($serviceName);
+
+        $service = Delivery\Batch\Service::wrap($serviceMock);
+        $this->assertEquals($serviceName, $service->name());
+    }
 }

@@ -35,4 +35,12 @@ class Service implements ServiceInterface
             yield $this->service->send($message);
         }
     }
+
+    public static function wrap(Delivery\ServiceInterface $service): Delivery\Batch\ServiceInterface
+    {
+        if ($service instanceof Delivery\Batch\ServiceInterface) {
+            return $service;
+        }
+        return new self($service);
+    }
 }
