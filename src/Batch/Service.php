@@ -10,30 +10,10 @@ use Wearesho\Delivery\ResultInterface;
 
 class Service implements ServiceInterface
 {
+    use ServiceTrait;
+
     public function __construct(private readonly Delivery\ServiceInterface $service)
     {
-    }
-
-    public function name(): string
-    {
-        return $this->service->name();
-    }
-
-    public function balance(): BalanceInterface
-    {
-        return $this->service->balance();
-    }
-
-    public function send(Delivery\MessageInterface $message): ResultInterface
-    {
-        return $this->service->send($message);
-    }
-
-    public function batch(iterable $messages): iterable
-    {
-        foreach ($messages as $message) {
-            yield $this->service->send($message);
-        }
     }
 
     public static function wrap(Delivery\ServiceInterface $service): Delivery\Batch\ServiceInterface
@@ -42,5 +22,10 @@ class Service implements ServiceInterface
             return $service;
         }
         return new self($service);
+    }
+
+    protected function baseService(): Delivery\ServiceInterface
+    {
+        return $this->service;
     }
 }
