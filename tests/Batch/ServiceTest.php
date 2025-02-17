@@ -154,5 +154,6 @@ class ServiceTest extends TestCase
 
         $service = Delivery\Batch\Service::wrap($serviceMock);
         $this->assertEquals($serviceName, $service->name());
+        $this->assertEquals($serviceMock, $service);
     }
 }
