@@ -10,7 +10,7 @@ class Result implements ResultInterface
         private readonly string $messageId,
         private readonly MessageInterface $message,
         private readonly Result\Status $status,
-        private readonly ?string $reason
+        private readonly ?string $reason = null
     ) {
     }
 
