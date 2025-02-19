@@ -24,4 +24,17 @@ enum Status: string
     case Failed = "Failed";
     case Cancelled = "Cancelled";
     case Error = "Error";
+
+    /** Determines if the status represents a successful delivery state */
+    public function isSuccess(): bool
+    {
+        return match ($this) {
+            self::Queued,
+            self::Accepted,
+            self::Sent,
+            self::Delivered,
+            self::Read => true,
+            default => false,
+        };
+    }
 }
