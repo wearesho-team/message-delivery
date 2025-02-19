@@ -8,6 +8,7 @@ final class Options
 {
     public const SENDER_NAME = 'senderName';
     public const CHANNEL = 'channel';
+    public const TTL = 'ttl'; // seconds
 
     public static function get(MessageInterface $message, string $optionKey): mixed
     {
