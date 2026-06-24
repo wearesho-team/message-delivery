@@ -20,28 +20,20 @@ class StubService implements Batch\ServiceInterface
 
     public function batch(iterable $messages): iterable
     {
-        $time = time();
-        foreach ($messages as $i => $message) {
-            yield $this->createResult($message, $time, $i);
+        foreach ($messages as $message) {
+            yield $this->createResult($message);
         }
     }
 
     public function send(MessageInterface $message): ResultInterface
     {
-        return $this->createResult(
-            $message,
-            time(),
-            0
-        );
+        return $this->createResult($message);
     }
 
-    private function createResult(
-        MessageInterface $message,
-        int $time,
-        string|int $index
-    ): ResultInterface {
+    private function createResult(MessageInterface $message): ResultInterface
+    {
         return new Result(
-            messageId: "stub_" . $time . "_" . $index,
+            messageId: uniqid('stub_', more_entropy: true),
             message: $message,
             status: Result\Status::Delivered,
         );
