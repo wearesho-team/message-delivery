@@ -1,46 +1,49 @@
 # Message Delivery
 [![Latest Stable Version](https://poser.pugx.org/wearesho-team/message-delivery/v/stable.png)](https://packagist.org/packages/wearesho-team/message-delivery)
 [![Total Downloads](https://poser.pugx.org/wearesho-team/message-delivery/downloads.png)](https://packagist.org/packages/wearesho-team/message-delivery)
-![PHP Composer](https://github.com/wearesho-team/message-delivery/workflows/PHP%20Composer/badge.svg)
+[![PHP Composer](https://github.com/wearesho-team/message-delivery/actions/workflows/php.yml/badge.svg?branch=master)](https://github.com/wearesho-team/message-delivery/actions/workflows/php.yml)
 [![codecov](https://codecov.io/gh/wearesho-team/message-delivery/branch/master/graph/badge.svg)](https://codecov.io/gh/wearesho-team/message-delivery)
 
 This repository includes standard interfaces and implementations
-for simple message sending.  
+for simple message sending.
+
+Compatibility: tested on PHP 8.4, PHP 8.5
 
 ## Installation
 ```bash
-composer require wearesho-team/message-delivery
+composer require wearesho-team/message-delivery:^2.4
 ```
 
 ## Contents
 
 ### Interfaces
-- [Exception](./src/Exception.php) - exception that will be thrown by
-[ServiceInterface](./src/ServiceInterface.php) if message can not be sent.
+- [ServiceInterface](./src/ServiceInterface.php) - message delivery service: `name()`, `balance()` and `send()`.
+- [Batch\ServiceInterface](./src/Batch/ServiceInterface.php) - extends
+[ServiceInterface](./src/ServiceInterface.php) with `batch()` for sending several messages.
 - [MessageInterface](./src/MessageInterface.php) - message entity that includes
-`recipient` and `text` fields. Can be extended with additional fields.
-- [RepositoryInterface](./src/RepositoryInterface.php) - messages repository.
-Stores history of message sending. Can be used as dependency in
-[ServiceInterface](./src/ServiceInterface.php) implementations.
-- [ContainsSenderName](./src/ContainsSenderName.php) - interface than extend Message with sender name getter
-- [CheckBalance](src/CheckBalance.php) - contain declaration of method `balance` for service for checking balance.
-Return [Balance](src/Balance.php) that contain `amount` and `currency`.
+`recipient`, `text` and `options` fields. Known option keys are listed in [Options](./src/Options.php)
+(sender name, channel, TTL).
+- [ResultInterface](./src/ResultInterface.php) - result of sending a message: message id, message,
+[status](./src/Result/Status.php) and reason.
+- [BalanceInterface](./src/BalanceInterface.php) - service balance with `amount` and `currency`.
+- [History\RepositoryInterface](./src/History/RepositoryInterface.php) - stores the history of sent messages
+as [History\ItemInterface](./src/History/ItemInterface.php) entries.
+- [Exception](./src/Exception.php) - exception thrown by
+[ServiceInterface](./src/ServiceInterface.php) implementations if a message can not be sent.
 
 ### Implementations
-- [MessageTrait](./src/MessageTrait.php) - traits with getters for
-[MessageInterface](./src/MessageInterface.php) fields.
-- [SenderNameTrait](./src/SenderNameTrait.php) - trait with getters for 
-[ContainsSenderName](./src/ContainsSenderName.php) interface
-- [MessageWithSender](./src/MessageWithSender.php) - entity, that extends [Message](./src/MessageWithSender.php) 
-and uses [SenderNameTrait](./src/SenderNameTrait.php)
-- [Message](./src/Message.php) - entity, that uses MessageTrait.
-- [ServiceMock](./src/ServiceMock.php) - simple [ServiceInterface](./src/ServiceInterface.php)
-implementation. Created for test purposes. 
-- [MemoryRepository](./src/MemoryRepository.php) - simple [RepositoryInterface](./src/RepositoryInterface.php)
-implementation that allows to store history in memory. Created for test purposes.
-- [RepositoryTrait](./src/RepositoryTrait.php) - simplifies [RepositoryInterface](./src/RepositoryInterface.php)
-implementation.
-- [BalanceTrait](src/BalanceTrait.php) - trait with getters for [BalanceInterface](src/BalanceInterface.php)
+- [Message](./src/Message.php), [Result](./src/Result.php), [Balance](./src/Balance.php)
+(with [BalanceTrait](./src/BalanceTrait.php)) and [History\Item](./src/History/Item.php) - entities.
+- [Batch\Service](./src/Batch/Service.php) - wraps any [ServiceInterface](./src/ServiceInterface.php)
+and sends batches message by message (see also [Batch\ServiceTrait](./src/Batch/ServiceTrait.php)).
+- [History\Service](./src/History/Service.php) - decorates a batch service and stores every result
+in a [History\RepositoryInterface](./src/History/RepositoryInterface.php).
+- [History\MemoryRepository](./src/History/MemoryRepository.php) - stores the history in memory.
+Created for test purposes.
+- [StubService](./src/StubService.php) - simple [Batch\ServiceInterface](./src/Batch/ServiceInterface.php)
+implementation that sends nothing and returns a `Delivered` result for every message. Created for test purposes.
+- [Test\History\RepositoryTest](./src/Test/History/RepositoryTest.php) - abstract PHPUnit test case
+for [History\RepositoryInterface](./src/History/RepositoryInterface.php) implementations.
 
 ### Example
 
@@ -51,13 +54,13 @@ require_once './vendor/autoload.php';
 
 use Wearesho\Delivery;
 
-$service = new Delivery\ServiceMock();
+$service = new Delivery\StubService();
 $message = new Delivery\Message(
-    $text = 'hello',
-    $recipient = 'world'
+    text: 'hello',
+    recipient: 'world'
 );
 
-$service->send($message);
+$result = $service->send($message);
 ```
 
 ## Integrations

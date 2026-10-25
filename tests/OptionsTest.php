@@ -4,15 +4,14 @@ declare(strict_types=1);
 
 namespace Wearesho\Delivery\Tests;
 
-use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
 use Wearesho\Delivery;
 
 class OptionsTest extends TestCase
 {
-    /**
-     * @dataProvider optionsDataProvider
-     */
+    #[DataProvider('optionsDataProvider')]
     public function testGet(array $messageOptions, string $optionKey, mixed $expectedResult): void
     {
         // Arrange
@@ -62,9 +61,9 @@ class OptionsTest extends TestCase
     /**
      * Creates a mock for MessageInterface
      */
-    private function createMessageMock(array $options): Delivery\MessageInterface&MockObject
+    private function createMessageMock(array $options): Delivery\MessageInterface&Stub
     {
-        $message = $this->createMock(Delivery\MessageInterface::class);
+        $message = $this->createStub(Delivery\MessageInterface::class);
         $message->method('getOptions')
             ->willReturn($options);
         return $message;

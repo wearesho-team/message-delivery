@@ -4,14 +4,13 @@ declare(strict_types=1);
 
 namespace Wearesho\Delivery\Tests;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Wearesho\Delivery;
 
 class MessageTest extends TestCase
 {
-    /**
-     * @dataProvider messageDataProvider
-     */
+    #[DataProvider('messageDataProvider')]
     public function testMessageCreationAndGetters(
         string $text,
         string $recipient,

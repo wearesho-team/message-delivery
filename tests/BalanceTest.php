@@ -4,14 +4,13 @@ declare(strict_types=1);
 
 namespace Wearesho\Delivery\Tests;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Wearesho\Delivery;
 
 class BalanceTest extends TestCase
 {
-    /**
-     * @dataProvider balanceDataProvider
-     */
+    #[DataProvider('balanceDataProvider')]
     public function testBalanceCreationAndGetters(
         float $amount,
         ?string $currency,
@@ -79,9 +78,7 @@ class BalanceTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider numberFormatDataProvider
-     */
+    #[DataProvider('numberFormatDataProvider')]
     public function testNumberFormatting(float $amount, string $expectedFormat): void
     {
         // Arrange & Act
@@ -125,9 +122,7 @@ class BalanceTest extends TestCase
         );
     }
 
-    /**
-     * @dataProvider stringCastDataProvider
-     */
+    #[DataProvider('stringCastDataProvider')]
     public function testStringCasting(float $amount, ?string $currency, string $expected): void
     {
         // Arrange

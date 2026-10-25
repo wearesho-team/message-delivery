@@ -155,7 +155,7 @@ abstract class RepositoryTest extends TestCase
     {
         // Arrange
         $result = $this->createResult('msg_999');
-        $nonExistentItem = $this->createMock(ItemInterface::class);
+        $nonExistentItem = $this->createStub(ItemInterface::class);
         $nonExistentItem->method('id')->willReturn(999999);
 
         // Act & Assert
@@ -167,7 +167,7 @@ abstract class RepositoryTest extends TestCase
         string $messageId,
         Result\Status $status = Result\Status::Sent
     ): ResultInterface {
-        $message = $this->createMock(MessageInterface::class);
+        $message = $this->createStub(MessageInterface::class);
         $message->method('getText')->willReturn('Test message');
         $message->method('getRecipient')->willReturn('+1234567890');
         $message->method('getOptions')->willReturn([]);
