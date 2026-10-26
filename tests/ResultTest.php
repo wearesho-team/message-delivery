@@ -4,15 +4,14 @@ declare(strict_types=1);
 
 namespace Wearesho\Delivery\Tests;
 
-use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
 use Wearesho\Delivery;
 
 class ResultTest extends TestCase
 {
-    /**
-     * @dataProvider resultDataProvider
-     */
+    #[DataProvider('resultDataProvider')]
     public function testResultCreationAndGetters(
         string $messageId,
         string $messageText,
@@ -84,8 +83,8 @@ class ResultTest extends TestCase
         string $text,
         string $recipient,
         array $options
-    ): Delivery\MessageInterface&MockObject {
-        $message = $this->createMock(Delivery\MessageInterface::class);
+    ): Delivery\MessageInterface&Stub {
+        $message = $this->createStub(Delivery\MessageInterface::class);
 
         $message->method('getText')
             ->willReturn($text);

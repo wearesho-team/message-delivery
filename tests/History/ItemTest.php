@@ -4,32 +4,31 @@ declare(strict_types=1);
 
 namespace Wearesho\Delivery\Tests\History;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
-use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\Stub;
 use Carbon\Carbon;
 use Wearesho\Delivery;
 
 class ItemTest extends TestCase
 {
-    private Delivery\ResultInterface&MockObject $resultMock;
-    private Delivery\MessageInterface&MockObject $messageMock;
+    private Delivery\ResultInterface&Stub $resultMock;
+    private Delivery\MessageInterface&Stub $messageMock;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->messageMock = $this->createMock(Delivery\MessageInterface::class);
+        $this->messageMock = $this->createStub(Delivery\MessageInterface::class);
 
-        $this->resultMock = $this->createMock(Delivery\ResultInterface::class);
+        $this->resultMock = $this->createStub(Delivery\ResultInterface::class);
         $this->resultMock->method('messageId')->willReturn('msg_123');
         $this->resultMock->method('message')->willReturn($this->messageMock);
         $this->resultMock->method('status')->willReturn(Delivery\Result\Status::Delivered);
         $this->resultMock->method('reason')->willReturn(null);
     }
 
-    /**
-     * @dataProvider itemDataProvider
-     */
+    #[DataProvider('itemDataProvider')]
     public function testItemCreationAndGetters(
         int $id,
         string $serviceName,

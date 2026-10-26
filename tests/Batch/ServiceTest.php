@@ -2,21 +2,23 @@
 
 namespace Wearesho\Delivery\Tests\Batch;
 
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\Stub;
 use Wearesho\Delivery;
 
 class ServiceTest extends TestCase
 {
     private Delivery\ServiceInterface&MockObject $baseServiceMock;
     private Delivery\Batch\Service $batchService;
-    private Delivery\BalanceInterface&MockObject $balanceMock;
+    private Delivery\BalanceInterface&Stub $balanceMock;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->balanceMock = $this->createMock(Delivery\BalanceInterface::class);
+        $this->balanceMock = $this->createStub(Delivery\BalanceInterface::class);
 
         $this->baseServiceMock = $this->createMock(Delivery\ServiceInterface::class);
         $this->baseServiceMock->method('name')->willReturn('TestService');
@@ -25,6 +27,7 @@ class ServiceTest extends TestCase
         $this->batchService = new Delivery\Batch\Service($this->baseServiceMock);
     }
 
+    #[AllowMockObjectsWithoutExpectations]
     public function testName(): void
     {
         // Act
@@ -34,6 +37,7 @@ class ServiceTest extends TestCase
         $this->assertEquals('TestService', $name);
     }
 
+    #[AllowMockObjectsWithoutExpectations]
     public function testBalance(): void
     {
         // Act
@@ -46,8 +50,8 @@ class ServiceTest extends TestCase
     public function testSend(): void
     {
         // Arrange
-        $message = $this->createMock(Delivery\MessageInterface::class);
-        $result = $this->createMock(Delivery\ResultInterface::class);
+        $message = $this->createStub(Delivery\MessageInterface::class);
+        $result = $this->createStub(Delivery\ResultInterface::class);
 
         $this->baseServiceMock
             ->expects($this->once())
@@ -72,16 +76,16 @@ class ServiceTest extends TestCase
             ->expects($this->exactly(3))
             ->method('send')
             ->willReturnCallback(function (Delivery\MessageInterface $message) use (&$messages, &$expectedResults) {
-                $result = $this->createMock(Delivery\ResultInterface::class);
+                $result = $this->createStub(Delivery\ResultInterface::class);
                 $messages[] = $message;
                 $expectedResults[] = $result;
                 return $result;
             });
 
         $testMessages = [
-            $this->createMock(Delivery\MessageInterface::class),
-            $this->createMock(Delivery\MessageInterface::class),
-            $this->createMock(Delivery\MessageInterface::class),
+            $this->createStub(Delivery\MessageInterface::class),
+            $this->createStub(Delivery\MessageInterface::class),
+            $this->createStub(Delivery\MessageInterface::class),
         ];
 
         // Act
@@ -112,9 +116,9 @@ class ServiceTest extends TestCase
     public function testBatchWithException(): void
     {
         // Arrange
-        $message1 = $this->createMock(Delivery\MessageInterface::class);
-        $message2 = $this->createMock(Delivery\MessageInterface::class);
-        $result1 = $this->createMock(Delivery\ResultInterface::class);
+        $message1 = $this->createStub(Delivery\MessageInterface::class);
+        $message2 = $this->createStub(Delivery\MessageInterface::class);
+        $result1 = $this->createStub(Delivery\ResultInterface::class);
 
         $this->baseServiceMock
             ->expects($this->exactly(2))
@@ -139,17 +143,19 @@ class ServiceTest extends TestCase
         $this->assertSame($result1, $results[0]);
     }
 
+    #[AllowMockObjectsWithoutExpectations]
     public function testBatchWrap(): void
     {
         $service = Delivery\Batch\Service::wrap($this->baseServiceMock);
         $this->assertEquals('TestService', $service->name());
     }
 
+    #[AllowMockObjectsWithoutExpectations]
     public function testBatchWrapBatchService(): void
     {
         $serviceName = 'TestServiceBatch';
 
-        $serviceMock = $this->createMock(Delivery\Batch\ServiceInterface::class);
+        $serviceMock = $this->createStub(Delivery\Batch\ServiceInterface::class);
         $serviceMock->method('name')->willReturn($serviceName);
 
         $service = Delivery\Batch\Service::wrap($serviceMock);
